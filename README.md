@@ -6,7 +6,7 @@ Simplipy *reduces the size* of a Python installation, for use in embedded system
 * **No performance impact** - it will not work faster because something was removed, nor will it work slower for the same reason.
 * **Functionality is preserved** - Simplipy does what it does, mainly by avoiding data duplication, rather than by removing features. As a result, a "simplipied" Python will behave like a regular one, unless you take extra steps to strip out more bits.
 
-This instrument is used by Dekart to make a slimmer version of Python for microcontrollers, these are applied in telemetry and industrial automation systems. For more details, have a look at http://telecontrol.md or http://dekart.com.
+This instrument is used by Dekart to make a slimmer version of Python for microcontrollers, these are applied in telemetry and industrial automation systems. For more details, have a look at http://telecontrol.md or http://dekart.md
 
 What can be thrown out
 ----------------------
@@ -46,30 +46,31 @@ Metrics
 =======
 Here are some actual numbers that put things into perspective::
 
+```
  alex@ralien ~/pyout $ find . -name "*.pyo" -ls | awk '{total += $7} END {print total}'
  9663502
  alex@ralien ~/pyout $ find . -name "*.pyc" -ls | awk '{total += $7} END {print total}'
  9704832
  alex@ralien ~/pyout $ find . -name "*.py" -ls | awk '{total += $7} END {print total}'
  10688590
+```
 
-============= ======== ======== ========
- criteria       pyo      pyc      py    
-============= ======== ======== ========
- size         9.6 MB   9.7 MB   10.6 MB
- debugable     no       no       yes
- load speed   fast     fast     normal
-============= ======== ======== ======== 
+ criteria   |   pyo  |   pyc  |   py    
+------------|--------|--------|---------
+ size       | 9.6 MB | 9.7 MB | 10.6 MB
+ debugable  |  no    |  no    |  yes
+ load speed | fast   | fast   | normal
+
 
 * If you delete `py` files, you cannot see the source code of a module, though it is not a problem in the context of embedded systems.
 
 Overall, Simplipy can provide a 50% reduction with its default settings::
-
+```
  alex@ralien ~ $ du -hs ~/pyout-original
  98M	/home/alex/pyout-original
  alex@ralien ~ $ du -hs ~/pyout
  49M	/home/alex/pyout
-
+```
 
 
 
@@ -77,13 +78,10 @@ Overall, Simplipy can provide a 50% reduction with its default settings::
 Workflow
 --------
 1. compile Python from source
-
  * How to compile: http://www.diveintopython.net/installing_python/source.html
  * in this example it is assumed that everything goes into `/home/alex/pyout`
  * if you've done it all right, the directory will contain the following subdirectories: `bin  include  lib  share`
-
 2. `simplipy.sh /home/alex/pyout` - run this and follow the on-screen action.
-
  * All the changes will be made in-place, therefore it might be a good idea to make a copy of the original directory, in case you'll need it later or wish to examine the differences.
 
 
